@@ -1,0 +1,4 @@
+﻿  main.cpp
+Z:\cs5201\hw2\main.cpp(37,9): warning C4101: 'num1': unreferenced local variable
+Z:\cs5201\hw2\main.cpp(37,14): warning C4101: 'num2': unreferenced local variable
+  hw2.vcxproj -> Z:\cs5201\hw2\Debug\hw2.exe
