@@ -1,0 +1,3 @@
+linearInterpolator.o: linearInterpolator.cpp linearInterpolator.h \
+ linearInterpolator.hpp
+main.o: main.cpp linearInterpolator.h linearInterpolator.hpp

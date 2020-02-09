@@ -6,8 +6,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <sstream> 
-//#include "linearInterpolator.h"  
-
+#include "linearInterpolator.h"
 using namespace std;
 
 tuple<int, int> numData;
@@ -24,9 +23,19 @@ vector<string> split(const std::string& s, char delimiter)
 }
 int main()
 {
+    /*
+    string test = "This is a test";
+    cout << test<<endl;
+    vector<string> newTokens = split(test, ' ');
+    for (auto x : newTokens)
+    {
+        cout << x;
+    }*/
+    
     string wholeLine, word;
-    cout<<"Hello";
     ifstream fin;
+    vector < tuple<float, float, float>> setofPoints_1;
+    vector < tuple<float, float, float>> setofPoints_2;
     fin.open("sample.input");
 
     if(fin.fail())
@@ -34,21 +43,47 @@ int main()
         cerr<<"Error Opening File"<<endl;
         exit(1);
     }
-    int num1,num2;
+    
     fin>>get<0>(numData)>>get<1>(numData);
     cout<<endl<<get<0>(numData)<<endl<<get<1>(numData)<<endl;
+    
     for (int i = 0; i < get<0>(numData); i++)
     {
-        getline(fin, wholeLine);
-        vector<string> newTokens=split(wholeLine,' ');
-        for (char x : wholeLine)
+
+        vector<float> temp_points;
+        for (int j = 0; j < 3; j++)
         {
-            cout << x<<" ";
+            string temp_input;
+            fin >> temp_input;
+            temp_points.push_back(stof(temp_input));
+
         }
-
-        cout << endl;
-
+        //if (temp_points.size() != 3)
+        //{
+            //throw error
+        //}
+        tuple<float, float, float> temp_tuple = make_tuple(temp_points[0],
+            temp_points[1],temp_points[2]);
+        setofPoints_1.push_back(temp_tuple);
     }
+    //check if datapoints are correct
+
+
+
+    linearInterpolator<float> h(setofPoints_1);
+    cout << h;
+
+    /* test tuples
+    cout << endl << "-------------" << endl;
+    for (int i = 0; i < setofPoints_1.size(); i++)
+    {
+        float one, two, three;
+        tie(one,two,three) = setofPoints_1[i];
+        cout << one << " " << two << " " << three << endl;
+    }
+    cout << endl << "-------------" << endl;
+    */
+   
     return 0;
     //Your program must first read two integers from stdin,
     //denoting the number of data points in the two following data files

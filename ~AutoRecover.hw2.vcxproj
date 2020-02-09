@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -142,9 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linearInterpolator.h" />
-    <ClInclude Include="linearInterpolator.hpp">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
+    <ClInclude Include="linearInterpolator.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sample.corr_out" />

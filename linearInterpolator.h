@@ -1,27 +1,36 @@
 #ifndef LINEARINTERPOLATOR_H
 #define LINEARINTERPOLATOR_H
-
+#include <vector>
+#include <iostream>
+#include <tuple>
 //Interpolator Class
 using namespace std;
 template <typename t>
 class linearInterpolator
 {
 private:
-  /* data */
+    int sizeOfPointVector;
+    vector < tuple<t, t, t>> points;
+
 public:
   linearInterpolator(); //defaults to 20
-  linearInterpolator(const vectortuple<t, t, t> points);
+  linearInterpolator(const vector<tuple<t, t, t>>
+      inputPoints);
+  //pretty print
+  template<typename t> friend ostream& operator << (ostream& os, const
+      linearInterpolator<t>& liObj);
+  /*
   linearInterpolator(const linearInterpolator & otherlp);
   linearInterpolator & operator = ( const linearInterpolator & source); 
   linearInterpolator & operator () ( const linearInterpolator & source);
   
-  ostream& operator << (std::ostream& os, const T& obj) const; //pretty print
   istream & operator >> (istream &in,  linearInterpolator &c); 
 
   t& linearInterpolator<t>::operator()(int indVar)
-  const t& linearInterpolator<t>::operator()(int indVar) const
+  const t& linearInterpolator<t>::operator()(int indVar) const*/
 };
 
+#include "linearInterpolator.hpp"
 //questions
 /*
   what are vector of points which are of type std::tuple?
