@@ -21,6 +21,30 @@ vector<string> split(const std::string& s, char delimiter)
     }
     return tokens;
 }
+
+//source_points is empty
+template <typename t>
+void readInput(ifstream & finput,int sizeofData, vector < tuple<t, t, t>> & source_emptypoints)
+{
+    for (int i = 0; i < sizeofData; i++)
+    {
+        vector<float> temp_points;
+        for (int j = 0; j < 3; j++)
+        {
+            string temp_input;
+            finput >> temp_input;
+            temp_points.push_back(stof(temp_input));
+        }
+        //if (temp_points.size() != 3)
+        //{
+            //throw error
+        //}
+        tuple<float, float, float> temp_tuple = make_tuple(temp_points[0],
+            temp_points[1], temp_points[2]);
+        source_emptypoints.push_back(temp_tuple);
+    }
+}
+
 int main()
 {
     /*
@@ -46,7 +70,9 @@ int main()
     
     fin>>get<0>(numData)>>get<1>(numData);
     cout<<endl<<get<0>(numData)<<endl<<get<1>(numData)<<endl;
-    
+    readInput(fin, get<0>(numData), setofPoints_1);
+    readInput(fin, get<1>(numData), setofPoints_2);
+    /*
     for (int i = 0; i < get<0>(numData); i++)
     {
 
@@ -65,13 +91,16 @@ int main()
         tuple<float, float, float> temp_tuple = make_tuple(temp_points[0],
             temp_points[1],temp_points[2]);
         setofPoints_1.push_back(temp_tuple);
-    }
+    }*/
+    //----
+
     //check if datapoints are correct
 
 
 
-    linearInterpolator<float> h(setofPoints_1);
-    cout << h;
+    linearInterpolator<float> H1(setofPoints_1);
+    linearInterpolator<float> H2(setofPoints_2);
+    cout << H1<<"--\n"<<H2;
 
     /* test tuples
     cout << endl << "-------------" << endl;

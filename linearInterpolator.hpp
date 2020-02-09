@@ -4,7 +4,7 @@ template<typename t>
 linearInterpolator< t >::linearInterpolator()
 {
 	cout << endl << "Creating linearInterpolator" << endl;
-	sizeOfPointVector = 20;
+	setSize(20);
 	cout << endl << "Default Size: "<< sizeOfPointVector;
 }
 
@@ -15,8 +15,8 @@ linearInterpolator< t >::linearInterpolator(const vector<tuple<t, t, t>>
 
 	cout << endl << "Creating linearInterpolator" << endl;
 
-	sizeOfPointVector = inputPoints.size();
-	cout << endl << "Size: " << sizeOfPointVector;
+	setSize(inputPoints.size());
+	cout <<"Size: " << sizeOfPointVector<<endl;
 
 	//creating vector of points
 	for (int i = 0; i < sizeOfPointVector; i++)
@@ -29,10 +29,38 @@ linearInterpolator< t >::linearInterpolator(const vector<tuple<t, t, t>>
 
 }
 
+template<typename U>
+linearInterpolator<U>& linearInterpolator<U>::operator = (const linearInterpolator<U> & source)
+{
+	
+	if (this == &source)
+	{
+		cout << "Prevent self assignment" << endl;
+	}
+	else
+	{
+		setSize(source.sizeOfPointVector);
+		points = source.points;
+	}
+	return *this;
+
+}
+
+
+template<typename t>
+void linearInterpolator< t >::setSize(const int inputSize)
+{
+	//might refactor later if no additional data
+	if (sizeOfPointVector != inputSize)
+	{
+		sizeOfPointVector = inputSize;
+	}
+	return;
+}
 /*
 Pre: 
 */
-template<class t>
+template<typename t>
 ostream& operator << (ostream& os, const linearInterpolator<t> & liObj)
 {
 	for (int i = 0; i < liObj.sizeOfPointVector; i++)

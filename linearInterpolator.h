@@ -17,10 +17,16 @@ public:
   linearInterpolator(const vector<tuple<t, t, t>>
       inputPoints);
   //pretty print
-  template<typename t> friend ostream& operator << (ostream& os, const
-      linearInterpolator<t>& liObj);
+  template<typename U>
+  friend ostream& operator << (ostream& os, const linearInterpolator<U>& liObj);
+
+  //linearInterpolator(const linearInterpolator& otherlp);
+  linearInterpolator<t>& operator = (const linearInterpolator<t> & source);
+
+
+  void setSize(const int inputSize);
+
   /*
-  linearInterpolator(const linearInterpolator & otherlp);
   linearInterpolator & operator = ( const linearInterpolator & source); 
   linearInterpolator & operator () ( const linearInterpolator & source);
   
