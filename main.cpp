@@ -23,6 +23,7 @@ vector<string> split(const std::string& s, char delimiter)
 }
 
 //source_points is empty
+/*
 template <typename t>
 void readInput(ifstream & finput,int sizeofData, vector < tuple<t, t, t>> & source_emptypoints)
 {
@@ -43,7 +44,7 @@ void readInput(ifstream & finput,int sizeofData, vector < tuple<t, t, t>> & sour
             temp_points[1], temp_points[2]);
         source_emptypoints.push_back(temp_tuple);
     }
-}
+}*/
 
 int main()
 {
@@ -70,9 +71,23 @@ int main()
     
     fin>>get<0>(numData)>>get<1>(numData);
     cout<<endl<<get<0>(numData)<<endl<<get<1>(numData)<<endl;
-    readInput(fin, get<0>(numData), setofPoints_1);
-    readInput(fin, get<1>(numData), setofPoints_2);
-    /*
+
+    try
+    {
+        linearInterpolator<float> H1(get<0>(numData));
+        linearInterpolator<float> H2(get<1>(numData));
+        fin >> H1 >> H2;
+        cout << H1 << "--\n" << H2;
+
+    }
+   catch (const std::out_of_range & oor) {
+    std::cerr << "\nOut of Range error: " << oor.what() << '\n';
+   }
+
+    //cin>>
+    //readInput(fin, get<0>(numData), setofPoints_1);
+    //readInput(fin, get<1>(numData), setofPoints_2);
+/*
     for (int i = 0; i < get<0>(numData); i++)
     {
 
@@ -98,9 +113,8 @@ int main()
 
 
 
-    linearInterpolator<float> H1(setofPoints_1);
-    linearInterpolator<float> H2(setofPoints_2);
-    cout << H1<<"--\n"<<H2;
+    //linearInterpolator<float> H1(setofPoints_1);
+    //linearInterpolator<float> H2(setofPoints_2);
 
     /* test tuples
     cout << endl << "-------------" << endl;

@@ -14,11 +14,14 @@ private:
 
 public:
   linearInterpolator(); //defaults to 20
+    linearInterpolator(int sizeGiven);
   linearInterpolator(const vector<tuple<t, t, t>>
       inputPoints);
   //pretty print
   template<typename U>
   friend ostream& operator << (ostream& os, const linearInterpolator<U>& liObj);
+  template<typename U>
+  friend istream& operator >> (istream& in, linearInterpolator<U>& liObj);
 
   //linearInterpolator(const linearInterpolator& otherlp);
   linearInterpolator<t>& operator = (const linearInterpolator<t> & source);
