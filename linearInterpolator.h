@@ -10,13 +10,18 @@ class linearInterpolator
 {
 private:
     int sizeOfPointVector;
-    vector < tuple<t, t, t>> points;
+    vector <tuple<t, t, t>> points;
+    vector <t> indonly_points;
+    t upper_bound;
+    t lower_bound;
+
 
 public:
   linearInterpolator(); //defaults to 20
     linearInterpolator(int sizeGiven);
   linearInterpolator(const vector<tuple<t, t, t>>
       inputPoints);
+  linearInterpolator(const linearInterpolator<t>& source);
   //pretty print
   template<typename U>
   friend ostream& operator << (ostream& os, const linearInterpolator<U>& liObj);
@@ -25,15 +30,14 @@ public:
 
   //linearInterpolator(const linearInterpolator& otherlp);
   linearInterpolator<t>& operator = (const linearInterpolator<t> & source);
-
-
+  //have const, and non-const version
+  tuple<t, t, t>  operator [] (const t index_var) const;
   void setSize(const int inputSize);
 
+
   /*
-  linearInterpolator & operator = ( const linearInterpolator & source); 
   linearInterpolator & operator () ( const linearInterpolator & source);
   
-  istream & operator >> (istream &in,  linearInterpolator &c); 
 
   t& linearInterpolator<t>::operator()(int indVar)
   const t& linearInterpolator<t>::operator()(int indVar) const*/

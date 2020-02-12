@@ -22,30 +22,6 @@ vector<string> split(const std::string& s, char delimiter)
     return tokens;
 }
 
-//source_points is empty
-/*
-template <typename t>
-void readInput(ifstream & finput,int sizeofData, vector < tuple<t, t, t>> & source_emptypoints)
-{
-    for (int i = 0; i < sizeofData; i++)
-    {
-        vector<float> temp_points;
-        for (int j = 0; j < 3; j++)
-        {
-            string temp_input;
-            finput >> temp_input;
-            temp_points.push_back(stof(temp_input));
-        }
-        //if (temp_points.size() != 3)
-        //{
-            //throw error
-        //}
-        tuple<float, float, float> temp_tuple = make_tuple(temp_points[0],
-            temp_points[1], temp_points[2]);
-        source_emptypoints.push_back(temp_tuple);
-    }
-}*/
-
 int main()
 {
     /*
@@ -77,55 +53,19 @@ int main()
         linearInterpolator<float> H1(get<0>(numData));
         linearInterpolator<float> H2(get<1>(numData));
         fin >> H1 >> H2;
+        float test = 10.703f;
+        H1[test];
+        //H1 = H1;
+        //H1 = H2;
         cout << H1 << "--\n" << H2;
 
     }
    catch (const std::out_of_range & oor) {
     std::cerr << "\nOut of Range error: " << oor.what() << '\n';
    }
-
-    //cin>>
-    //readInput(fin, get<0>(numData), setofPoints_1);
-    //readInput(fin, get<1>(numData), setofPoints_2);
-/*
-    for (int i = 0; i < get<0>(numData); i++)
-    {
-
-        vector<float> temp_points;
-        for (int j = 0; j < 3; j++)
-        {
-            string temp_input;
-            fin >> temp_input;
-            temp_points.push_back(stof(temp_input));
-
-        }
-        //if (temp_points.size() != 3)
-        //{
-            //throw error
-        //}
-        tuple<float, float, float> temp_tuple = make_tuple(temp_points[0],
-            temp_points[1],temp_points[2]);
-        setofPoints_1.push_back(temp_tuple);
-    }*/
-    //----
-
-    //check if datapoints are correct
-
-
-
-    //linearInterpolator<float> H1(setofPoints_1);
-    //linearInterpolator<float> H2(setofPoints_2);
-
-    /* test tuples
-    cout << endl << "-------------" << endl;
-    for (int i = 0; i < setofPoints_1.size(); i++)
-    {
-        float one, two, three;
-        tie(one,two,three) = setofPoints_1[i];
-        cout << one << " " << two << " " << three << endl;
-    }
-    cout << endl << "-------------" << endl;
-    */
+   catch (const std::invalid_argument & ia) {
+    std::cerr << "Invalid argument: " << ia.what() << '\n';
+   }
    
     return 0;
     //Your program must first read two integers from stdin,
