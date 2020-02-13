@@ -18,7 +18,7 @@ private:
 
 public:
   linearInterpolator(); //defaults to 20
-    linearInterpolator(int sizeGiven);
+  linearInterpolator(int sizeGiven);
   linearInterpolator(const vector<tuple<t, t, t>>
       inputPoints);
   linearInterpolator(const linearInterpolator<t>& source);
@@ -51,6 +51,8 @@ public:
   friend bool operator!=(const linearInterpolator<U>& l,
       const linearInterpolator<U>& r);
   void setSize(const int inputSize);
+  friend vector<string> split(const std::string& s, char delimiter);
+  friend t convert_to(const std::string& str);
 
 
   /*

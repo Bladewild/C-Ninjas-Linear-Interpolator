@@ -9,19 +9,8 @@
 #include "linearInterpolator.h"
 using namespace std;
 
-tuple<int, int> numData;
-vector<string> split(const std::string& s, char delimiter)
-{
-    vector<std::string> tokens;
-    string token;
-    istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter))
-    {
-        tokens.push_back(token);
-    }
-    return tokens;
-}
 
+tuple<int, int> numData;
 int main()
 {
     /*
@@ -38,6 +27,7 @@ int main()
     vector < tuple<float, float, float>> setofPoints_1;
     vector < tuple<float, float, float>> setofPoints_2;
     fin.open("sample.input");
+    cout.precision(8); // as requested
 
     if(fin.fail())
     {
@@ -61,8 +51,8 @@ int main()
         cout << "H1!=H2:" << (H1 != H2) << endl;
 
         tuple<float, float> dependInterpolated1;
-        dependInterpolated1 = H1(1.709f);
-        cout << "1.709:" << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
+        dependInterpolated1 = H1(1.707f);
+        cout << "1.707:" << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
 
         tuple<float, float> dependInterpolated2;
         dependInterpolated2 = H2(1.707f);
@@ -78,6 +68,13 @@ int main()
    }
    catch (const std::invalid_argument & ia) {
     std::cerr << "Invalid argument: " << ia.what() << '\n';
+   }
+   catch (const std::length_error & le) {
+       std::cerr << "Length error: " << le.what() << '\n';
+   }
+   catch (...)
+   {
+       std::cerr << "An uknown error has occured." << '\n';
    }
    
     return 0;

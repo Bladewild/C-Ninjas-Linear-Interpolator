@@ -54,7 +54,8 @@ linearInterpolator<t>::linearInterpolator(const linearInterpolator<t> & source)
 }
 
 template<typename t>
-linearInterpolator<t>& linearInterpolator<t>::operator = (const linearInterpolator<t>& source)
+linearInterpolator<t>& linearInterpolator<t>::operator =
+(const linearInterpolator<t>& source)
 {
     if (this == &source)
     {
@@ -82,6 +83,28 @@ void linearInterpolator< t >::setSize(const int inputSize)
     }
     return;
 }
+
+
+vector<string> split(const std::string& s, char delimiter)
+{
+    vector<std::string> tokens;
+    string token;
+    istringstream tokenStream(s);
+    while (std::getline(tokenStream, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+template <typename t>
+t convert_to(const std::string& str)
+{
+    std::istringstream ss(str);
+    t num;
+    ss >> num;
+    return num;
+}
 /*
 Pre: 
     << must be define for  template t
@@ -89,15 +112,19 @@ Pre:
 template<typename t>
 ostream& operator << (ostream& os, const linearInterpolator<t> & liObj)
 {
+
     if (liObj.points.empty())
     {
         throw std::out_of_range("Empty Vector");
     }
+
+    os.precision(8); // as requested
     for (int i = 0; i < liObj.sizeOfPointVector; i++)
     {
         t independent1, dependent1, dependent2;
         tie(independent1, dependent1, dependent2) = liObj.points[i];
-        os << independent1 << ": " << dependent1 << " " << dependent2 << "\n";
+        os << independent1 << ": " << dependent1 << " but " 
+            << dependent2 << "\n";
     }
     return os;
 }
@@ -107,22 +134,37 @@ istream& operator >> (istream& finput, linearInterpolator<t>& liObj)
 {
     //clears out entire vector
     //check for invalid range
+
     vector<tuple<t, t, t>> new_points;
     vector<t> new_indonlypoints;
     for (int i = 0; i < liObj.sizeOfPointVector; i++)
     {
-        //change this to getline then check if extra points
         vector<t> temp_points;
-        for (int j = 0; j < 3; j++)
+
+
+        string temp_input;
+        getline(finput,temp_input);
+        //run until non empty line has been found.
+        while (temp_input.length() == 0)
         {
-            string temp_input;
-            finput >> temp_input;
-            temp_points.push_back(stof(temp_input));
+            getline(finput, temp_input);
         }
-        //if (temp_points.size() != 3)
-        //{
-            //throw error
-        //}
+        vector<string> temp_stringPoints= split(temp_input, ' ');
+
+        if (temp_stringPoints.size() != 3) //throws if not 3 var tuple
+        {
+            string reason1 = to_string(temp_stringPoints.size());
+            string reason2 = reason1 + " variables in given set. " 
+            + "Only 3 variables are allowed to be in the vector of tuples.";
+            throw length_error(reason2);
+        }
+        //convert points to t type
+        for (auto x : temp_stringPoints)
+        {
+            t converted = convert_to <t>(x);
+            temp_points.push_back(converted);
+        }
+        //package points into usable tuple for vector
         tuple<t, t, t> temp_tuple = make_tuple(temp_points[0],
             temp_points[1], temp_points[2]);
         new_points.push_back(temp_tuple);
@@ -130,8 +172,6 @@ istream& operator >> (istream& finput, linearInterpolator<t>& liObj)
         //check if increasing
         if (i > 0 && (new_indonlypoints[i - 1] >= new_indonlypoints[i]))
         {
-            //cout << "\nOne: " << new_indonlypoints[i - 1] << endl;
-            //cout << "\nTwo: " << new_indonlypoints[i] << endl;
             throw invalid_argument("Independent Variable must be increasing.");
         }
         
@@ -148,6 +188,9 @@ istream& operator >> (istream& finput, linearInterpolator<t>& liObj)
 
     return finput;
 }
+
+
+
 /*
 Pre: upper_bound and lower_bound variables have to be defined
     < and > must be define for  template t
@@ -265,14 +308,21 @@ const tuple<t,t> linearInterpolator<t>::operator ()
         cout << "\nITR:" << itr << endl;
         t independent1_low, dependent1_low, dependent2_low;
         t independent1_upper, dependent1_upper, dependent2_upper;
-        tie(independent1_low, dependent1_low, dependent2_low) = points[itr];
-        tie(independent1_upper, dependent1_upper, dependent2_upper) = points[itr + 1];
+        tie(independent1_low, dependent1_low, dependent2_low) 
+            = points[itr];
+        tie(independent1_upper, dependent1_upper, dependent2_upper) 
+            = points[itr + 1];
         cout << "Size:" << sizeOfPointVector << endl;
-        cout << "Lower:" << independent1_low << "," << dependent1_low << "," << dependent2_low << endl;
-        cout << "Upper:" << independent1_upper << "," << dependent1_upper << "," << dependent2_upper << endl;
-        t percent = (index_var - independent1_low) / (independent1_upper - independent1_low);
-        t newdepend1 = (dependent1_upper - dependent1_low) * percent + dependent1_low;
-        t newdepend2 = (dependent2_upper - dependent2_low) * percent + dependent2_low;
+        cout << "Lower:" << independent1_low << "," << dependent1_low << "," 
+            << dependent2_low << endl;
+        cout << "Upper:" << independent1_upper << "," << dependent1_upper << "," 
+            << dependent2_upper << endl;
+        t percent = (index_var - independent1_low) / 
+            (independent1_upper - independent1_low);
+        t newdepend1 = (dependent1_upper - dependent1_low) * percent 
+            + dependent1_low;
+        t newdepend2 = (dependent2_upper - dependent2_low) * percent 
+            + dependent2_low;
 
         dependInterpolated = make_tuple(newdepend1, newdepend2);
         //cout << newdepend1 << " " << newdepend2<<endl;
@@ -286,6 +336,10 @@ template<typename t>
 t linearInterpolator<t>::operator ~ () const
 {
     //check if empty, then throw
+    if (points.empty())
+    {
+        throw std::out_of_range("No points to access, empty vector");
+    }
     t spanScalar = upper_bound - lower_bound;
     return spanScalar;
 }
