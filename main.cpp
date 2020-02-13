@@ -61,13 +61,13 @@ int main()
         cout << "H1!=H2:" << (H1 != H2) << endl;
 
         tuple<float, float> dependInterpolated1;
-        dependInterpolated1 = H1(1.707f);
-        cout << "1.707:" << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
+        dependInterpolated1 = H1(1.709f);
+        cout << "1.709:" << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
 
         tuple<float, float> dependInterpolated2;
         dependInterpolated2 = H2(1.707f);
         cout << "1.707:" << get<0>(dependInterpolated2) << " " << get<1>(dependInterpolated2) << endl;
-        //H1[test];
+        //H1[1.609f]; //check for const and non const versions
         //H1 = H1;
         //H1 = H2;
         //cout << H1 << "--\n" << H2;

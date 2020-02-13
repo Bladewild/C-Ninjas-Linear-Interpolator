@@ -33,7 +33,7 @@ public:
   linearInterpolator<t>& operator = (const linearInterpolator<t> & source);
   //have const, and non-const version
   const tuple<t, t, t>  operator [] (const t index_var) const;
-  tuple<t, t, t> &  operator [] (const t index_var);
+  //tuple<t, t, t> &  operator [] (const t index_var);
 
   const tuple<t, t> operator () (const t index_var) const;
   t operator ~ () const;
