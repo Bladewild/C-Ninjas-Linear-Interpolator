@@ -97,7 +97,7 @@ ostream& operator << (ostream& os, const linearInterpolator<t> & liObj)
     {
         t independent1, dependent1, dependent2;
         tie(independent1, dependent1, dependent2) = liObj.points[i];
-        os << independent1 << " " << dependent1 << " " << dependent2 << endl;
+        os << independent1 << ": " << dependent1 << " " << dependent2 << "\n";
     }
     return os;
 }
@@ -130,13 +130,14 @@ istream& operator >> (istream& finput, linearInterpolator<t>& liObj)
         //check if increasing
         if (i > 0 && (new_indonlypoints[i - 1] >= new_indonlypoints[i]))
         {
-            cout << "\nOne: " << new_indonlypoints[i - 1] << endl;
-            cout << "\nTwo: " << new_indonlypoints[i] << endl;
+            //cout << "\nOne: " << new_indonlypoints[i - 1] << endl;
+            //cout << "\nTwo: " << new_indonlypoints[i] << endl;
             throw invalid_argument("Independent Variable must be increasing.");
         }
         
     }
     liObj.points = new_points;
+    liObj.indonly_points = new_indonlypoints;
     //establish bounds
     tuple<t,t,t> firstTuple = liObj.points[0]; 
     liObj.lower_bound = get<0>(firstTuple);
@@ -156,7 +157,7 @@ Post:
 
 //access only const version
 template<typename t>
-tuple<t,t,t> linearInterpolator<t>::operator [] 
+const tuple<t,t,t> linearInterpolator<t>::operator [] 
 (const t index_var ) const
 {
     if (points.empty())
@@ -174,17 +175,137 @@ tuple<t,t,t> linearInterpolator<t>::operator []
     bool found = false;
     int itr = 0;
     tuple<t,t,t> varfound;
-    while (!found || itr <sizeOfPointVector)
+    while (!found && itr <sizeOfPointVector)
     {
         t ind_low = indonly_points[itr];
-        if (ind_low <= index_var) 
+        if (ind_low >= index_var)
         {
             found = true;
             varfound = points[itr];
             cout << "\nFound: " << ind_low << endl;
         }
-        itr++;
+		else //todo check later
+		{
+			itr++;
+		}
     }
     return varfound;
 }
 
+/*
+Pre:
+    t must have assignment operator(=) defined
+    t must have subtraction operator(-) defined
+    t must have addition operator(+) defined
+    t must have division operator(/) defined
+*/
+template<typename t>
+const tuple<t,t> linearInterpolator<t>::operator () 
+(const t index_var ) const
+{
+    if (points.empty())
+    {
+        throw std::out_of_range("No points to access, empty vector");
+    }
+    if (index_var > upper_bound || index_var < lower_bound)
+    {
+        throw std::out_of_range("Out of bounds. Cannot extrapolate.");
+    }
+    
+    //has to be increasing check, if haven't. Done before this in construction or >>
+
+
+    bool found = false;
+    int itr = 0;
+    // -1 because can't exceed last var
+    while (!found && itr <sizeOfPointVector-1)
+    {
+        t ind_low = indonly_points[itr];// this fails
+		//cout << "ind_low:" << ind_low << endl;
+		//cout << "index_var:" << index_var << endl;
+        if (ind_low >= index_var) 
+        {
+            found = true;
+			itr--;
+        }
+		else
+		{
+			itr++;
+		}
+    }
+
+    //check if the same as independent var
+    //ifso just just give independent
+    // interpolate
+    cout << "\nITR:" << itr<<endl;
+    t independent1_low, dependent1_low, dependent2_low;
+    t independent1_upper, dependent1_upper, dependent2_upper;
+    tie(independent1_low, dependent1_low, dependent2_low) = points[itr];
+    tie(independent1_upper, dependent1_upper, dependent2_upper) = points[itr+1];
+	cout << "Size:" << sizeOfPointVector << endl;
+	cout << "Lower:" << independent1_low << "," << dependent1_low << "," << dependent2_low<<endl;
+	cout << "Upper:" << independent1_upper << "," << dependent1_upper << "," << dependent2_upper << endl;
+    t percent = (index_var - independent1_low) / (independent1_upper - independent1_low);
+    t newdepend1 = (dependent1_upper - dependent1_low)* percent + dependent1_low;
+    t newdepend2 = (dependent2_upper - dependent2_low)* percent + dependent2_low;
+
+    tuple<t,t> dependInterpolated = make_tuple(newdepend1, newdepend2);
+    //cout << newdepend1 << " " << newdepend2<<endl;
+
+    return dependInterpolated;
+}
+template<typename t>
+t linearInterpolator<t>::operator ~ () const
+{
+	//check if empty, then throw
+    t spanScalar = upper_bound - lower_bound;
+    return spanScalar;
+}
+
+//Pre:
+/*
+    ~ unary operator has to be defined for both l and r
+    result type of unary operator must define < 
+*/ 
+template<typename t>
+bool operator<(const linearInterpolator<t>& l,
+    const linearInterpolator<t>& r)
+{
+    return ((~l) < (~r));
+}
+
+//Pre:
+/*
+    ~ unary operator has to be defined for both l and r
+    result type of unary operator must define >
+*/
+template<typename t>
+bool operator>(const linearInterpolator<t>& l,
+    const linearInterpolator<t>& r)
+{
+    return ((~l) > (~r));
+}
+
+//Pre:
+/*
+    ~ unary operator has to be defined for both l and r
+    result type of unary operator must define ==
+*/
+template<typename t>
+bool operator==(const linearInterpolator<t>& l,
+    const linearInterpolator<t>& r)
+{
+    return ((~l) == (~r));
+}
+
+//Pre:
+/*
+    ~ unary operator has to be defined for both l and r
+    result type of unary operator must define ==
+*/
+template<typename t>
+bool operator!=(const linearInterpolator<t>& l,
+    const linearInterpolator<t>& r)
+{
+    return ((~l) != (~r));
+}

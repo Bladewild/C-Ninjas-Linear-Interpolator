@@ -53,11 +53,24 @@ int main()
         linearInterpolator<float> H1(get<0>(numData));
         linearInterpolator<float> H2(get<1>(numData));
         fin >> H1 >> H2;
-        float test = 10.703f;
-        H1[test];
+        //float test = 0.201;
+        cout << ~H1<<endl;
+        cout << "H1<H2:" << (H1 < H2)<<endl;
+        cout << "H1>H2:" << (H1 > H2) << endl;
+        cout << "H1==H2:" << (H1 == H2) << endl;
+        cout << "H1!=H2:" << (H1 != H2) << endl;
+
+        tuple<float, float> dependInterpolated1;
+        dependInterpolated1 = H1(1.707f);
+        cout << "1.707:" << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
+
+        tuple<float, float> dependInterpolated2;
+        dependInterpolated2 = H2(1.707f);
+        cout << "1.707:" << get<0>(dependInterpolated2) << " " << get<1>(dependInterpolated2) << endl;
+        //H1[test];
         //H1 = H1;
         //H1 = H2;
-        cout << H1 << "--\n" << H2;
+        //cout << H1 << "--\n" << H2;
 
     }
    catch (const std::out_of_range & oor) {

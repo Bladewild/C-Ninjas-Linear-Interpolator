@@ -24,14 +24,32 @@ public:
   linearInterpolator(const linearInterpolator<t>& source);
   //pretty print
   template<typename U>
-  friend ostream& operator << (ostream& os, const linearInterpolator<U>& liObj);
+  friend ostream& operator << (ostream& os, const 
+      linearInterpolator<U>& liObj);
   template<typename U>
   friend istream& operator >> (istream& in, linearInterpolator<U>& liObj);
 
   //linearInterpolator(const linearInterpolator& otherlp);
   linearInterpolator<t>& operator = (const linearInterpolator<t> & source);
   //have const, and non-const version
-  tuple<t, t, t>  operator [] (const t index_var) const;
+  const tuple<t, t, t>  operator [] (const t index_var) const;
+  tuple<t, t, t> &  operator [] (const t index_var);
+
+  const tuple<t, t> operator () (const t index_var) const;
+  t operator ~ () const;
+  //relational operators
+  template<typename U>
+  friend bool operator<(const linearInterpolator<U>& l,
+      const linearInterpolator<U>& r);
+  template<typename U>
+  friend bool operator<(const linearInterpolator<U>& l,
+      const linearInterpolator<U>& r);
+  template<typename U>
+  friend bool operator==(const linearInterpolator<U>& l,
+      const linearInterpolator<U>& r);
+  template<typename U>
+  friend bool operator!=(const linearInterpolator<U>& l,
+      const linearInterpolator<U>& r);
   void setSize(const int inputSize);
 
 
