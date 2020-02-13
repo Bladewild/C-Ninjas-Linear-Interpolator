@@ -41,11 +41,18 @@ linearInterpolator< t >::linearInterpolator(const vector<tuple<t, t, t>>
         }
     }
 
+    //set bounds
+    tuple<t, t, t> firstTuple = points[0];
+    lower_bound = get<0>(firstTuple);
+    tuple<t, t, t> lastTuple = points[sizeOfPointVector - 1];
+    upper_bound = get<0>(lastTuple);
+
 }
 
 //Copy Constructor
 template<typename t>
-linearInterpolator<t>::linearInterpolator(const linearInterpolator<t> & source)
+linearInterpolator<t>::linearInterpolator(const linearInterpolator<t> 
+    & source)
 {
     setSize(source.sizeOfPointVector);
     points = source.points;
@@ -123,14 +130,14 @@ ostream& operator << (ostream& os, const linearInterpolator<t> & liObj)
     {
         t independent1, dependent1, dependent2;
         tie(independent1, dependent1, dependent2) = liObj.points[i];
-        os << independent1 << ": " << dependent1 << " but " 
+        os << independent1 << ": " << dependent1 << " " 
             << dependent2 << "\n";
     }
     return os;
 }
 
 template<typename t>
-istream& operator >> (istream& finput, linearInterpolator<t>& liObj)
+istream operator >> (istream& finput, linearInterpolator<t>& liObj)
 {
     //clears out entire vector
     //check for invalid range
@@ -190,12 +197,12 @@ istream& operator >> (istream& finput, linearInterpolator<t>& liObj)
 }
 
 
-
 /*
 Pre: upper_bound and lower_bound variables have to be defined
     < and > must be define for  template t
 Post:
     returns null if not found;
+    passes a copy
 */
 
 //access only const version
@@ -203,6 +210,7 @@ template<typename t>
 const tuple<t,t,t> linearInterpolator<t>::operator [] 
 (const t index_var ) const
 {
+    cout << "ACCESSING CONST" << endl;
     if (points.empty())
     {
         throw std::out_of_range("No points to access, empty vector");
@@ -228,16 +236,63 @@ const tuple<t,t,t> linearInterpolator<t>::operator []
                 itr--;
             }
             found = true;
-            varfound = points[itr];
-            ind_low = indonly_points[itr];
-            cout << "\nFound: " << ind_low << endl;
+            //varfound = points[itr];
+            //ind_low = indonly_points[itr];
+            //cout << "\nFound: " << ind_low << endl;
         }
         else //todo check later
         {
             itr++;
         }
     }
-    return varfound;
+    return points[itr];
+}
+
+/*
+Pre: upper_bound and lower_bound variables have to be defined
+    < and > must be define for  template t
+Post:
+    returns null if not found;
+    passes a & to return function
+*/
+template<typename t>
+tuple<t, t, t> & linearInterpolator<t>::operator [] (const t index_var)
+{
+    cout << "ACCESSING NONCONST"<<endl;
+    if (points.empty())
+    {
+        throw std::out_of_range("No points to access, empty vector");
+    }
+    if (index_var > upper_bound || index_var < lower_bound)
+    {
+        throw std::out_of_range("Out of bounds. Cannot extrapolate.");
+    }
+
+    //has to be increasing check, if haven't. Done before this in construction or >>
+
+    bool found = false;
+    int itr = 0;
+    tuple<t, t, t>  varfound;
+    //ind_low represents lower end indepdent var;
+    while (!found && itr < sizeOfPointVector)
+    {
+        t ind_low = indonly_points[itr];
+        if (ind_low >= index_var)
+        {
+            if (ind_low != index_var) //check if not same
+            {
+                itr--;
+            }
+            found = true;
+            //ind_low = indonly_points[itr];
+            //cout << "\nFound: " << ind_low << endl;
+        }
+        else //todo check later
+        {
+            itr++;
+        }
+    }
+    return points[itr];
 }
 
 /*
@@ -279,7 +334,7 @@ const tuple<t,t> linearInterpolator<t>::operator ()
             if (ind_low == index_var) 
             {
                 equaltoPoint = true;
-                cout << "\nEQUAL---"<<endl;
+                //cout << "\nEQUAL---"<<endl;
             }
             else
             {
@@ -303,20 +358,20 @@ const tuple<t,t> linearInterpolator<t>::operator ()
         tie(ignore, dependent1, dependent2) = points[itr];
         dependInterpolated = make_tuple(dependent1, dependent2);
     }
-    else // interpolate //WORKS
+    else // interpolate 
     {
-        cout << "\nITR:" << itr << endl;
+        //cout << "\nITR:" << itr << endl;
         t independent1_low, dependent1_low, dependent2_low;
         t independent1_upper, dependent1_upper, dependent2_upper;
         tie(independent1_low, dependent1_low, dependent2_low) 
             = points[itr];
         tie(independent1_upper, dependent1_upper, dependent2_upper) 
             = points[itr + 1];
-        cout << "Size:" << sizeOfPointVector << endl;
-        cout << "Lower:" << independent1_low << "," << dependent1_low << "," 
-            << dependent2_low << endl;
-        cout << "Upper:" << independent1_upper << "," << dependent1_upper << "," 
-            << dependent2_upper << endl;
+        //cout << "Size:" << sizeOfPointVector << endl;
+        //cout << "Lower:" << independent1_low << "," << dependent1_low << "," 
+        //    << dependent2_low << endl;
+        //cout << "Upper:" << independent1_upper << "," << dependent1_upper << "," 
+        //    << dependent2_upper << endl;
         t percent = (index_var - independent1_low) / 
             (independent1_upper - independent1_low);
         t newdepend1 = (dependent1_upper - dependent1_low) * percent 
