@@ -53,68 +53,33 @@ int main()
   }
     
   cout.precision(8); // as requested
-  fin >>get<0>(numData)>>get<1>(numData);
-  //cin >> get<0>(numData) >> get<1>(numData);
-  cout<<endl<<get<0>(numData)<<endl<<get<1>(numData)<<endl;
-
-  //test constant
    
 
   try
   {
-
-    //test 1 tests constructor with size given. empty <<
-    /*
-    readInput(fin, get<0>(numData), setofPoints_1);
-    readInput(fin, get<1>(numData), setofPoints_2);
-    const linearInterpolator<double> H1(setofPoints_1);
-    linearInterpolator<double> H2(setofPoints_2);
-    */
-    /*
-    cout << H1 << "--\n" << H2;
-    */
-    //test2
+    cin >> get<0>(numData) >> get<1>(numData);
     linearInterpolator<double> H1(get<0>(numData));
     linearInterpolator<double> H2(get<1>(numData));
         
-    fin >> H1 >> H2;
+    cin >> H1 >> H2;
         
-    cout << ~H1<<endl;
-    cout << "H1<H2:" << (H1 < H2)<<endl;
-    cout << "H1>H2:" << (H1 > H2) << endl;
-    cout << "H1==H2:" << (H1 == H2) << endl;
-    cout << "H1!=H2:" << (H1 != H2) << endl;
+
 
     tuple<double, double> dependInterpolated1;
-    dependInterpolated1 = H1(1.707f);
-    cout << "1.707:" << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
+    dependInterpolated1 = H1(1.707);
+    cout << "1.707: " << get<0>(dependInterpolated1) <<" "<< get<1>(dependInterpolated1) << endl;
 
     tuple<double, double> dependInterpolated2;
-    dependInterpolated2 = H2(1.707f);
-    cout << "1.707:" << get<0>(dependInterpolated2) << " " << get<1>(dependInterpolated2) << endl;
-    //tuple tests;
-    tuple <double, double, double > h1Tuple = H1[1.609f]; //check for const and non const versions
-    tuple <double, double, double> h2Tuple = H2[1.609f]; //check for const and non const versions
-    cout << "\nh1Tuple" << endl;
-    cout << "\n" << get<0>(h1Tuple) << " " << get<1>(h1Tuple) << " " << get<2>(h1Tuple) << endl;
-    cout << "\nh2Tuple" << endl;
-    cout << "\n" << get<0>(h2Tuple) << " " << get<1>(h2Tuple) << " " << get<2>(h2Tuple) << endl;
+    dependInterpolated2 = H2(1.707);
+    cout << "1.707: " << get<0>(dependInterpolated2) << " " << get<1>(dependInterpolated2) << endl;
 
+    cout << (H1 < H2) << endl;
 
-    //H1[1.609f] = make_tuple(0.000f, 0.000f, 0.000f);
-    H2[1.609f] = make_tuple(0.000f, 0.000f, 0.000f);
-    h1Tuple = H1[1.609f]; //check for const and non const versions
-    h2Tuple = H2[1.609f]; //check for const and non const versions
-    cout << "\n\nNEW\nh1Tuple" << endl;
-    cout << "\n" << get<0>(h1Tuple) << " " << get<1>(h1Tuple) << " " << get<2>(h1Tuple) << endl;
-    cout << "\nh2Tuple" << endl;
-    cout << "\n" << get<0>(h2Tuple) << " " << get<1>(h2Tuple) << " " << get<2>(h2Tuple) << endl;
-    cout << H1 << "--\n" << H2;
-        
-    //H1 = H1;
-    //H1 = H2;
-    //cout << H1 << "--\n" << H2;
-
+    H1[0.000] = make_tuple(0.000, 1.47, -0.0234);
+    tuple<double, double> dependInterpolated3;
+    dependInterpolated3 = H1(0.03f);
+    cout << "0.03: " << get<0>(dependInterpolated3) << " " << get<1>(dependInterpolated3) << endl;
+   
   }
   catch (const std::out_of_range & oor) {
     std::cerr << "\nOut of Range error: " << oor.what() << '\n';

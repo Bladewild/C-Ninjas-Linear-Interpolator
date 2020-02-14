@@ -10,27 +10,26 @@
 template<typename t>
 linearInterpolator< t >::linearInterpolator()
 {
-  cout << endl << "Creating linearInterpolator" << endl;
+  //cout << endl << "Creating linearInterpolator" << endl;
   setSize(20);
-  cout << endl << "Default Size: "<< sizeOfPointVector;
+  //cout << endl << "Default Size: "<< sizeOfPointVector;
 }
 
 template<typename t>
 linearInterpolator< t >::linearInterpolator(int sizeGiven)
 {
-  cout << endl << "Creating linearInterpolator" << endl;
+  //cout << endl << "Creating linearInterpolator" << endl;
   setSize(sizeGiven);
-  cout << endl << "Given Size: " << sizeOfPointVector<<endl;
+  //cout << endl << "Given Size: " << sizeOfPointVector<<endl;
 }
 
 template<typename t>
 linearInterpolator<t>::linearInterpolator(const vector<tuple<t, t, t>> 
   inputPoints)
 {
-  cout << endl << "Creating linearInterpolator" << endl;
-
+  //cout << endl << "Creating linearInterpolator" << endl;
   setSize(inputPoints.size());
-  cout <<"Size: " << sizeOfPointVector<<endl;
+  //cout <<"Size: " << sizeOfPointVector<<endl;
 
   //creating vector of points to pass to points member var
 
@@ -76,12 +75,7 @@ template<typename t>
 linearInterpolator<t>& linearInterpolator<t>::operator =
 (const linearInterpolator<t>& source)
 {
-  if (this == &source)
-  {
-    //this works
-    cout << "Prevent self assignment (=)" << endl;
-  }
-  else
+  if (this != &source)
   {
     setSize(source.sizeOfPointVector);
     points = source.points;
