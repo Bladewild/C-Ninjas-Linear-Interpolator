@@ -6,7 +6,6 @@
 *
 * Implementation file of linear interpolator
 */
-
 #include <iostream>
 #include <tuple>
 #include <fstream>
@@ -60,6 +59,8 @@ int main()
     cin >> get<0>(numData) >> get<1>(numData);
     linearInterpolator<double> H1(get<0>(numData));
     linearInterpolator<double> H2(get<1>(numData));
+    linearInterpolator<double> H3 = H1;
+    const linearInterpolator<double> H4 = H2;
         
     cin >> H1 >> H2;
         

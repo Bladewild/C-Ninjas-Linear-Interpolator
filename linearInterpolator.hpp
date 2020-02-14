@@ -27,9 +27,7 @@ template<typename t>
 linearInterpolator<t>::linearInterpolator(const vector<tuple<t, t, t>> 
   inputPoints)
 {
-  //cout << endl << "Creating linearInterpolator" << endl;
   setSize(inputPoints.size());
-  //cout <<"Size: " << sizeOfPointVector<<endl;
 
   //creating vector of points to pass to points member var
 
@@ -85,9 +83,16 @@ linearInterpolator<t>& linearInterpolator<t>::operator =
   return *this;
 }
 
+
+
 template<typename t>
 void linearInterpolator< t >::setSize(const int inputSize)
 {
+  if (inputSize < 2)
+  {
+    throw invalid_argument("cannot assign below 2");
+  }
+
   //might refactor later if no additional data
   if (sizeOfPointVector != inputSize)
   {
@@ -149,6 +154,11 @@ ostream& operator << (ostream& os, const linearInterpolator<t> & liObj)
 template<typename t>
 bool linearInterpolator<t>::checkifIncreasing() const
 {
+  if (points.empty())
+  {
+    throw std::out_of_range("Empty Vector");
+  }
+
   int i = 0;
   bool isInvalid = false;
   while( (!isInvalid) && (i< (sizeOfPointVector - 1)) )
@@ -251,7 +261,6 @@ const tuple<t,t,t> linearInterpolator<t>::operator []
 
   bool found = false;
   int itr = 0;
-  tuple<t,t,t> varfound;
   //ind_low represents lower end indepdent var;
   while (!found && itr <sizeOfPointVector)
   {
@@ -295,7 +304,6 @@ tuple<t, t, t> & linearInterpolator<t>::operator [] (const t index_var)
 
   bool found = false;
   int itr = 0;
-  tuple<t, t, t>  varfound;
   //ind_low represents lower end indepdent var;
   while (!found && itr < sizeOfPointVector)
   {
@@ -414,11 +422,6 @@ t linearInterpolator<t>::operator ~ () const
   return spanScalar;
 }
 
-//Pre:
-/*
-    ~ unary operator has to be defined for both l and r
-    result type of unary operator must define < 
-*/ 
 template<typename t>
 bool operator<(const linearInterpolator<t>& l,
     const linearInterpolator<t>& r)
@@ -426,11 +429,6 @@ bool operator<(const linearInterpolator<t>& l,
   return ((~l) < (~r));
 }
 
-//Pre:
-/*
-    ~ unary operator has to be defined for both l and r
-    result type of unary operator must define >
-*/
 template<typename t>
 bool operator>(const linearInterpolator<t>& l,
     const linearInterpolator<t>& r)
@@ -438,11 +436,6 @@ bool operator>(const linearInterpolator<t>& l,
   return ((~l) > (~r));
 }
 
-//Pre:
-/*
-    ~ unary operator has to be defined for both l and r
-    result type of unary operator must define ==
-*/
 template<typename t>
 bool operator==(const linearInterpolator<t>& l,
     const linearInterpolator<t>& r)
@@ -450,11 +443,6 @@ bool operator==(const linearInterpolator<t>& l,
   return ((~l) == (~r));
 }
 
-//Pre:
-/*
-    ~ unary operator has to be defined for both l and r
-    result type of unary operator must define ==
-*/
 template<typename t>
 bool operator!=(const linearInterpolator<t>& l,
     const linearInterpolator<t>& r)
