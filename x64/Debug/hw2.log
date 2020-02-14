@@ -1,6 +1,2 @@
 ﻿  main.cpp
-Z:\cs5201\C-Ninjas-Linear-Interpolator\main.cpp(85,56): error C2678: binary '=': no operator found which takes a left-hand operand of type 'const std::tuple<float,float,float>' (or there is no acceptable conversion)
-F:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\tuple(558,12): message : could be 'std::tuple<float,float,float> &std::tuple<float,float,float>::operator =(volatile const std::tuple<float,float,float> &)'
-F:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\tuple(575,12): message : or       'std::tuple<float,float,float> &std::tuple<float,float,float>::operator =<std::tuple<float,float,float>,float,0>(std::tuple<float,float,float> &&) noexcept(<expr>)'
-F:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\tuple(564,12): message : or       'std::tuple<float,float,float> &std::tuple<float,float,float>::operator =<std::tuple<float,float,float>,float,0>(const std::tuple<float,float,float> &) noexcept(<expr>)'
-Z:\cs5201\C-Ninjas-Linear-Interpolator\main.cpp(85,56): message : while trying to match the argument list '(const std::tuple<float,float,float>, std::tuple<float,float,float>)'
+  hw2.vcxproj -> Z:\cs5201\C-Ninjas-Linear-Interpolator\x64\Debug\hw2.exe

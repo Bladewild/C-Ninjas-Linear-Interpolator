@@ -1,22 +1,49 @@
+/*
+* Author: Your name and your class and section number
+* File: filename.cpp Date: tomorrow
+* Class: CS 9001 section A
+* Instructor : Homer Simpson
+* A brief description of the file ’s contents
+*/
+
 #ifndef LINEARINTERPOLATOR_H
 #define LINEARINTERPOLATOR_H
 #include <vector>
 #include <iostream>
 #include <tuple>
 //Interpolator Class
+/*
+* Class: Class_name
+* A brief description of what the class does
+*/
 using namespace std;
 template <typename t>
 class linearInterpolator
 {
 private:
-    int sizeOfPointVector;
-    vector <tuple<t, t, t>> points;
-    vector <t> indonly_points;
-    t upper_bound;
-    t lower_bound;
+    int sizeOfPointVector; //size of points
+    vector <tuple<t, t, t>> points; //contains dataset given
+    //vector <t> indonly_points; // used to for searching specific points
+    // below uses to find span
+    t upper_bound; //last of independent variable
+    t lower_bound; //first independent variable
 
 
 public:
+
+/*
+* Function: function_name
+* A description of the function that includes any
+* information needed to use it
+* Pre: The function ’s preconditions , in terms of
+* program variables and system state
+* Post: The function ’s postconditions
+* Param paramname1 : A description of the first parameter
+* Param paramname2 : A description of the second parameter
+* Return: A description of the return value
+*/
+
+
   linearInterpolator(); //defaults to 20
   linearInterpolator(int sizeGiven);
   linearInterpolator(const vector<tuple<t, t, t>>
@@ -27,7 +54,7 @@ public:
   friend ostream& operator << (ostream& os, const 
       linearInterpolator<U>& liObj);
   template<typename U>
-  friend istream& operator >> (istream& in, linearInterpolator<U>& liObj);
+  friend istream& operator >> (istream& finput, linearInterpolator<U>& liObj);
 
   //linearInterpolator(const linearInterpolator& otherlp);
   linearInterpolator<t>& operator = (const linearInterpolator<t> & source);
@@ -54,6 +81,7 @@ public:
   friend vector<string> split(const std::string& s, char delimiter);
   template<typename U>
   friend U convert_to(const std::string& str);
+  bool checkifIncreasing() const;
 
 
   /*
