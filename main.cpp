@@ -17,42 +17,11 @@
 #include "linearInterpolator.h"
 using namespace std;
 
-// for test
-template <typename t>
-void readInput(istream& finput, int sizeofData, vector < tuple<t, t, t>>& source_emptypoints)
-{
-    for (int i = 0; i < sizeofData; i++)
-    {
-        vector<double> temp_points;
-        for (int j = 0; j < 3; j++)
-        {
-            string temp_input;
-            finput >> temp_input;
-            temp_points.push_back(stof(temp_input));
-        }
-        tuple<double, double, double> temp_tuple = make_tuple(temp_points[0],
-            temp_points[1], temp_points[2]);
-        source_emptypoints.push_back(temp_tuple);
-    }
-}
-
 int main()
 {
 
-  tuple<int, int> numData;
-  vector < tuple<double, double, double>> setofPoints_1;
-  vector < tuple<double, double, double>> setofPoints_2;
-    
-  ifstream fin;
-  fin.open("sample.input");
-  if(fin.fail())
-  {
-    cerr<<"Error Opening File"<<endl;
-    exit(1);
-  }
-    
-  cout.precision(8); // as requested
-   
+  tuple<int, int> numData;    
+  cout.precision(8); // as requested  
 
   try
   {
